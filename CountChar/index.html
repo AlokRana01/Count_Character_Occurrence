@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Occurrence Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 1.5rem;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .result-item {
+            background-color: #e2e8f0;
+            padding: 0.5rem;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Character Counter</h1>
+        <textarea id="input-text" placeholder="Enter your text here..."></textarea>
+        <button id="count-btn">Count Characters</button>
+        <div id="result" style="display: none;">
+            <h2>Results:</h2>
+            <div id="result-list" class="result-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        const inputText = document.getElementById('input-text');
+        const countBtn = document.getElementById('count-btn');
+        const result = document.getElementById('result');
+        const resultList = document.getElementById('result-list');
+
+        function countCharacters(text) {
+            const charCount = {};
+            for (let char of text) {
+                charCount[char] = (charCount[char] || 0) + 1;
+            }
+            return charCount;
+        }
+
+        countBtn.addEventListener('click', () => {
+            const text = inputText.value;
+            const data = countCharacters(text);
+            displayResult(data);
+        });
+
+        function displayResult(data) {
+            resultList.innerHTML = '';
+            Object.entries(data).sort((a, b) => b[1] - a[1]).forEach(([char, count]) => {
+                const item = document.createElement('div');
+                item.className = 'result-item fade-in';
+                item.innerHTML = `<strong>${char === ' ' ? 'Space' : char}</strong>: ${count}`;
+                resultList.appendChild(item);
+            });
+            result.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
